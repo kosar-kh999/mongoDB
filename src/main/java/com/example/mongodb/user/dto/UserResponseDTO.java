@@ -1,4 +1,4 @@
-package com.example.mongodb.model;
+package com.example.mongodb.user.dto;
 
 import com.example.mongodb.core.ResponseDTO;
 import lombok.Getter;

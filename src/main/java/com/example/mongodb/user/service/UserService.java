@@ -1,6 +1,10 @@
-package com.example.mongodb.service;
+package com.example.mongodb.user.service;
 
-import com.example.mongodb.model.*;
+import com.example.mongodb.user.dto.UserRequestDTO;
+import com.example.mongodb.user.dto.UserResponseDTO;
+import com.example.mongodb.user.mapper.UserMapper;
+import com.example.mongodb.user.model.User;
+import com.example.mongodb.user.repository.UserRepo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

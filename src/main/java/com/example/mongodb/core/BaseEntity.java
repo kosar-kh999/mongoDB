@@ -1,21 +1,23 @@
-package com.example.mongodb;
+package com.example.mongodb.core;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
-@Setter
 @Getter
-@Document(collection = "user")
-public class User {
+@Setter
+@MappedSuperclass
+public class BaseEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
     private String id;
-    private String firstName;
-    private String lastName;
-    private String email;
+
 }

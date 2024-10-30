@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Setter
 @Getter
-@Document(collection = "USER")
+@Document(collection = "ROLE")
 public class Role extends BaseEntity {
 
     private String name;

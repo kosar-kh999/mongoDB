@@ -1,7 +1,7 @@
 package com.example.mongodb.state.model;
 
 import com.example.mongodb.city.model.City;
-import com.example.mongodb.core.BaseEntity;
+import com.example.mongodb.core.base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;

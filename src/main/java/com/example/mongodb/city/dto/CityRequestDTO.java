@@ -1,6 +1,6 @@
 package com.example.mongodb.city.dto;
 
-import com.example.mongodb.core.RequestDTO;
+import com.example.mongodb.core.base.RequestDTO;
 import com.example.mongodb.state.dto.ProvinceRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;

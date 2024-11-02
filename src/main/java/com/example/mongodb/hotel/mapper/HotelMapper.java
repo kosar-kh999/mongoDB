@@ -1,6 +1,6 @@
 package com.example.mongodb.hotel.mapper;
 
-import com.example.mongodb.core.BaseMapper;
+import com.example.mongodb.core.base.BaseMapper;
 import com.example.mongodb.hotel.dto.HotelRequestDTO;
 import com.example.mongodb.hotel.dto.HotelResponseDTO;
 import com.example.mongodb.hotel.model.Hotel;

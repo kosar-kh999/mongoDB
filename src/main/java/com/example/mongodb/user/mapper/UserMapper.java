@@ -1,6 +1,6 @@
 package com.example.mongodb.user.mapper;
 
-import com.example.mongodb.core.BaseMapper;
+import com.example.mongodb.core.base.BaseMapper;
 import com.example.mongodb.user.model.User;
 import com.example.mongodb.user.dto.UserRequestDTO;
 import com.example.mongodb.user.dto.UserResponseDTO;

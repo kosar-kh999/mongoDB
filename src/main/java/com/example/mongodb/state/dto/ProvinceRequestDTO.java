@@ -1,6 +1,6 @@
 package com.example.mongodb.state.dto;
 
-import com.example.mongodb.core.RequestDTO;
+import com.example.mongodb.core.base.RequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

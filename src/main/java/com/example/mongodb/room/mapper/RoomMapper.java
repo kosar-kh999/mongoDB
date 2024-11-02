@@ -1,7 +1,7 @@
 package com.example.mongodb.room.mapper;
 
 import com.example.mongodb.city.mapper.CityMapper;
-import com.example.mongodb.core.BaseMapper;
+import com.example.mongodb.core.base.BaseMapper;
 import com.example.mongodb.hotel.mapper.HotelMapper;
 import com.example.mongodb.room.dto.RoomRequestDTO;
 import com.example.mongodb.room.dto.RoomResponseDTO;

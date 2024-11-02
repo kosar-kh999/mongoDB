@@ -1,6 +1,6 @@
 package com.example.mongodb.room.dto;
 
-import com.example.mongodb.core.RequestDTO;
+import com.example.mongodb.core.base.RequestDTO;
 import com.example.mongodb.hotel.dto.HotelRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;

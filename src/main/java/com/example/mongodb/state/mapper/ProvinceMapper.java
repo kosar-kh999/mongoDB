@@ -1,6 +1,6 @@
 package com.example.mongodb.state.mapper;
 
-import com.example.mongodb.core.BaseMapper;
+import com.example.mongodb.core.base.BaseMapper;
 import com.example.mongodb.state.dto.ProvinceRequestDTO;
 import com.example.mongodb.state.dto.ProvinceResponseDTO;
 import com.example.mongodb.state.model.Province;

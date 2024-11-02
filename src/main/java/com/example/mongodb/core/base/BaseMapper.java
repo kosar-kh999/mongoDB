@@ -1,4 +1,4 @@
-package com.example.mongodb.core;
+package com.example.mongodb.core.base;
 
 import org.springframework.data.domain.Page;
 

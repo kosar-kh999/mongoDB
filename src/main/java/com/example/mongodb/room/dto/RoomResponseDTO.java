@@ -1,6 +1,6 @@
 package com.example.mongodb.room.dto;
 
-import com.example.mongodb.core.ResponseDTO;
+import com.example.mongodb.core.base.ResponseDTO;
 import com.example.mongodb.hotel.dto.HotelResponseDTO;
 import lombok.Getter;
 import lombok.Setter;

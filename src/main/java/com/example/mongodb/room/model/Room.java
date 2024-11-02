@@ -1,6 +1,6 @@
 package com.example.mongodb.room.model;
 
-import com.example.mongodb.core.BaseEntity;
+import com.example.mongodb.core.base.BaseEntity;
 import com.example.mongodb.hotel.model.Hotel;
 import lombok.Getter;
 import lombok.Setter;

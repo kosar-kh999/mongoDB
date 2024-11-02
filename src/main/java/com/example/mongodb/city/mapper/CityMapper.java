@@ -3,7 +3,7 @@ package com.example.mongodb.city.mapper;
 import com.example.mongodb.city.dto.CityRequestDTO;
 import com.example.mongodb.city.dto.CityResponseDTO;
 import com.example.mongodb.city.model.City;
-import com.example.mongodb.core.BaseMapper;
+import com.example.mongodb.core.base.BaseMapper;
 import com.example.mongodb.state.mapper.ProvinceMapper;
 import org.springframework.stereotype.Component;
 

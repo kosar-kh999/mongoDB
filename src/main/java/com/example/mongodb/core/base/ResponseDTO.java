@@ -1,4 +1,4 @@
-package com.example.mongodb.core;
+package com.example.mongodb.core.base;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.example.mongodb.role.mapper;
 
-import com.example.mongodb.core.BaseMapper;
+import com.example.mongodb.core.base.BaseMapper;
 import com.example.mongodb.role.dto.RoleRequestDTO;
 import com.example.mongodb.role.dto.RoleResponseDTO;
 import com.example.mongodb.role.model.Role;

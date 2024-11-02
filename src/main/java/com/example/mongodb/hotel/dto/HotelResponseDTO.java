@@ -1,7 +1,7 @@
 package com.example.mongodb.hotel.dto;
 
 import com.example.mongodb.city.dto.CityResponseDTO;
-import com.example.mongodb.core.ResponseDTO;
+import com.example.mongodb.core.base.ResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;

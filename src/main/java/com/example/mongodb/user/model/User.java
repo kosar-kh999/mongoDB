@@ -1,6 +1,6 @@
 package com.example.mongodb.user.model;
 
-import com.example.mongodb.core.BaseEntity;
+import com.example.mongodb.core.base.BaseEntity;
 import com.example.mongodb.role.model.Role;
 import lombok.Getter;
 import lombok.Setter;

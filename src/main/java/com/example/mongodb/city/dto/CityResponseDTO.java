@@ -1,6 +1,6 @@
 package com.example.mongodb.city.dto;
 
-import com.example.mongodb.core.ResponseDTO;
+import com.example.mongodb.core.base.ResponseDTO;
 import com.example.mongodb.state.dto.ProvinceResponseDTO;
 import lombok.Getter;
 import lombok.Setter;

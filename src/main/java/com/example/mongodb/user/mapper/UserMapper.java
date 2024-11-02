@@ -1,9 +1,9 @@
 package com.example.mongodb.user.mapper;
 
 import com.example.mongodb.core.base.BaseMapper;
-import com.example.mongodb.user.model.User;
 import com.example.mongodb.user.dto.UserRequestDTO;
 import com.example.mongodb.user.dto.UserResponseDTO;
+import com.example.mongodb.user.model.User;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,6 +21,8 @@ public class UserMapper implements BaseMapper<User, UserRequestDTO, UserResponse
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
+        user.setUsername(dto.getUsername());
+        user.setPassword(dto.getPassword());
     }
 
     @Override
@@ -35,6 +37,8 @@ public class UserMapper implements BaseMapper<User, UserRequestDTO, UserResponse
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setEmail(user.getEmail());
+        dto.setUsername(user.getUsername());
+        dto.setPassword(user.getPassword());
         baseField(dto, user);
     }
 }

@@ -2,6 +2,8 @@ package com.example.mongodb.user.controller;
 
 import com.example.mongodb.user.dto.UserRequestDTO;
 import com.example.mongodb.user.dto.UserResponseDTO;
+import com.example.mongodb.user.record.ResetPasswordRecord;
+import com.example.mongodb.user.record.UserRecord;
 import com.example.mongodb.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +46,24 @@ public class UserController {
     @DeleteMapping(value = "/user/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/user/role")
+    public ResponseEntity<Void> assignRoleForUser(@RequestBody UserRecord requestDTO) {
+        userService.assignRoleForUser(requestDTO);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/user/reset/password")
+    public ResponseEntity<Void> resetPasswordOfUser(@RequestBody ResetPasswordRecord requestDTO) {
+        userService.resetPasswordOfUser(requestDTO);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(path = "/user/wallet")
+    public ResponseEntity<Void> updateUser() {
+        userService.updateWalletOfUser();
         return ResponseEntity.noContent().build();
     }
 }

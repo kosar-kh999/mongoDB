@@ -12,6 +12,7 @@ import com.example.mongodb.user.model.User;
 import com.example.mongodb.user.repository.UserRepo;
 import com.example.mongodb.wallet.dto.WalletResponseDTO;
 import com.example.mongodb.wallet.mapper.WalletMapper;
+import com.example.mongodb.wallet.model.Wallet;
 import com.example.mongodb.wallet.repository.WalletRepo;
 import com.example.mongodb.walletHistory.enumuration.TransactionType;
 import com.example.mongodb.walletHistory.model.WalletHistory;
@@ -92,17 +93,18 @@ public class CreditTransferService {
     }
 
     @Transactional
-    public void increaseCredit(AcceptCreditRecord record) {
+    public WalletResponseDTO increaseCredit(AcceptCreditRecord record) {
         Optional<User> userOpt = userRepo.findById(record.userId());
         User user = userOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.userId())));
         Optional<CreditTransfer> creditTransferOpt = creditTransferRepo.findById(record.creditId());
         CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.creditId())));
-/*        Wallet wallet = user.getWallet();
-        wallet.setBalance(wallet.getBalance().add(creditTransfer.getAmount()));*/
+        creditTransfer.getUser().setWallet(user.getWallet());
+        Wallet wallet = user.getWallet();
         user.getWallet().setBalance(user.getWallet().getBalance().add(creditTransfer.getAmount()));
         userRepo.save(user);
-
-        /*        walletRepo.save(wallet);*/
+        wallet.setBalance(user.getWallet().getBalance());
+        walletRepo.save(wallet);
+        return walletMapper.toDTO(creditTransfer.getUser().getWallet());
     }
 
     @Transactional
@@ -112,18 +114,17 @@ public class CreditTransferService {
         creditTransfer.setCreditTransferType(CreditTransferType.CONFIRMED);
         creditTransferRepo.save(creditTransfer);
 
-        increaseCredit(record);
+        WalletResponseDTO walletResponseDTO = increaseCredit(record);
 
         WalletHistory walletHistory = new WalletHistory();
         walletHistory.setCredit(creditTransfer.getAmount());
-        /*        walletHistory.setWallet(creditTransfer.getUser().getWallet());*/
         walletHistory.setDescription(creditTransfer.getDescription());
         walletHistory.setTransactionDate(LocalDateTime.now());
         List<WalletHistory> walletHistories = creditTransfer.getUser().getWallet().getWalletHistories();
         walletHistories.add(walletHistory);
         walletHistory.setTransactionType(TransactionType.DEPOSIT);
         walletHistoryRepo.save(walletHistory);
-        return walletMapper.toDTO(creditTransfer.getUser().getWallet());
+        return walletResponseDTO;
     }
 
     public void rejectCreditTransfer(AcceptCreditRecord record) {

@@ -4,11 +4,14 @@ import com.example.mongodb.hotel.dto.HotelRequestDTO;
 import com.example.mongodb.hotel.dto.HotelResponseDTO;
 import com.example.mongodb.hotel.record.HotelRecord;
 import com.example.mongodb.hotel.service.HotelService;
+import com.example.mongodb.room.dto.RoomResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class HotelController {
@@ -46,5 +49,11 @@ public class HotelController {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         hotelService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/hotel/room/city/{id}")
+    public ResponseEntity<List<RoomResponseDTO>> getRoomsByHotelAndCity(@PathVariable String id) {
+        List<RoomResponseDTO> rooms = hotelService.getRoomsByHotelAndCity(id);
+        return ResponseEntity.ok().body(rooms);
     }
 }

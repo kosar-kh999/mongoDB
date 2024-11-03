@@ -6,6 +6,7 @@ import com.example.mongodb.role.model.Role;
 import com.example.mongodb.wallet.model.Wallet;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,6 +25,7 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
     private String email;
+    @NotNull(message = "Username cannot be null")
     private String username;
     private String password;
 

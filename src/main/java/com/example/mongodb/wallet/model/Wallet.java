@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -21,5 +22,5 @@ public class Wallet extends BaseEntity {
     private BigDecimal balance;
 
     @OneToMany(mappedBy = "wallet")
-    private List<WalletHistory> walletHistories;
+    private List<WalletHistory> walletHistories = new ArrayList<>();
 }

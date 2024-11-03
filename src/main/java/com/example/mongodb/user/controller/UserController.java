@@ -5,6 +5,7 @@ import com.example.mongodb.user.dto.UserResponseDTO;
 import com.example.mongodb.user.record.ResetPasswordRecord;
 import com.example.mongodb.user.record.UserRecord;
 import com.example.mongodb.user.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/user")
-    public ResponseEntity<String> add(@RequestBody UserRequestDTO requestDTO) {
+    public ResponseEntity<String> add(@Valid @RequestBody UserRequestDTO requestDTO) {
         String savedId = userService.save(requestDTO);
         return ResponseEntity.ok(savedId);
     }

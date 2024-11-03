@@ -38,8 +38,11 @@ public class UserService {
     }
 
     public String save(UserRequestDTO requestDTO) {
-        User user = userMapper.toEntity(requestDTO);
-        return userRepo.save(user).getId();
+        User user = userRepo.findByUsername(requestDTO.getUsername());
+        if (user != null)
+            throw new RuntimeException(String.format("کاربر  %s قبلا ثبت نام کرده است.", requestDTO.getUsername()));
+        User newUser = userMapper.toEntity(requestDTO);
+        return userRepo.save(newUser).getId();
     }
 
     public UserResponseDTO findById(String id) {

@@ -1,19 +1,24 @@
 package com.example.mongodb.user.model;
 
 import com.example.mongodb.core.base.BaseEntity;
+import com.example.mongodb.creditTransfer.model.CreditTransfer;
 import com.example.mongodb.role.model.Role;
 import com.example.mongodb.wallet.model.Wallet;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Setter
 @Getter
 @Document(collection = "USER")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User extends BaseEntity {
 
     private String firstName;
@@ -26,10 +31,12 @@ public class User extends BaseEntity {
     @JoinTable(
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "wallet_id")
+    @OneToMany(mappedBy = "user")
+    private List<CreditTransfer> creditTransfers;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Wallet wallet;
 
     public User() {

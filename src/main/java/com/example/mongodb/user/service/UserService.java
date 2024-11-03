@@ -10,6 +10,7 @@ import com.example.mongodb.user.record.ResetPasswordRecord;
 import com.example.mongodb.user.record.UserRecord;
 import com.example.mongodb.user.repository.UserRepo;
 import com.example.mongodb.wallet.model.Wallet;
+import com.example.mongodb.wallet.repository.WalletRepo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,16 @@ public class UserService {
     private final UserRepo userRepo;
     private final UserMapper userMapper;
     private final RoleRepo roleRepo;
+    private final WalletRepo walletRepo;
 
     public UserService(UserRepo userRepo,
-                       UserMapper userMapper, RoleRepo roleRepo) {
+                       UserMapper userMapper,
+                       RoleRepo roleRepo,
+                       WalletRepo walletRepo) {
         this.userRepo = userRepo;
         this.userMapper = userMapper;
         this.roleRepo = roleRepo;
+        this.walletRepo = walletRepo;
     }
 
     public String save(UserRequestDTO requestDTO) {
@@ -90,6 +95,7 @@ public class UserService {
                 Wallet wallet = new Wallet();
                 wallet.setBalance(BigDecimal.ZERO);
                 user.setWallet(wallet);
+                walletRepo.save(wallet);
             }
         }
         userRepo.saveAll(users);

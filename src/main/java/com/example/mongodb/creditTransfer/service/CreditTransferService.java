@@ -1,5 +1,6 @@
 package com.example.mongodb.creditTransfer.service;
 
+import com.example.mongodb.core.exception.CustomException;
 import com.example.mongodb.creditTransfer.dto.CreditTransferRequestDTO;
 import com.example.mongodb.creditTransfer.dto.CreditTransferResponseDTO;
 import com.example.mongodb.creditTransfer.enumuration.CreditTransferType;
@@ -56,14 +57,14 @@ public class CreditTransferService {
 
     public void update(String id, CreditTransferRequestDTO requestDTO) {
         Optional<CreditTransfer> creditTransferOpt = creditTransferRepo.findById(id);
-        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         creditTransferMapper.toEntity(requestDTO, creditTransfer);
         creditTransferRepo.save(creditTransfer);
     }
 
     public CreditTransferResponseDTO findById(String id) {
         Optional<CreditTransfer> creditTransferOpt = creditTransferRepo.findById(id);
-        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         return creditTransferMapper.toDTO(creditTransfer);
     }
 
@@ -74,14 +75,14 @@ public class CreditTransferService {
 
     public void delete(String id) {
         Optional<CreditTransfer> creditTransferOpt = creditTransferRepo.findById(id);
-        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         creditTransferRepo.delete(creditTransfer);
     }
 
     public CreditTransferResponseDTO AddCreditForUser(CreditTransferRecord requestDTO) {
         if (requestDTO.userId() != null && requestDTO.amount() != null && requestDTO.amount().doubleValue() > 0) {
             Optional<User> userOpt = userRepo.findById(requestDTO.userId());
-            User user = userOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", requestDTO.userId())));
+            User user = userOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", requestDTO.userId())));
             CreditTransfer creditTransfer = new CreditTransfer();
             creditTransfer.setUser(user);
             creditTransfer.setAmount(requestDTO.amount());
@@ -89,15 +90,15 @@ public class CreditTransferService {
             creditTransfer.setDescription(requestDTO.description());
             creditTransferRepo.save(creditTransfer);
             return creditTransferMapper.toDTO(creditTransfer);
-        } else throw new RuntimeException("مبلغ واریزی به کیف پول باید بیشتر از صفر باشد");
+        } else throw new CustomException("مبلغ واریزی به کیف پول باید بیشتر از صفر باشد");
     }
 
     @Transactional
     public WalletResponseDTO increaseCredit(AcceptCreditRecord record) {
         Optional<User> userOpt = userRepo.findById(record.userId());
-        User user = userOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.userId())));
+        User user = userOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.userId())));
         Optional<CreditTransfer> creditTransferOpt = creditTransferRepo.findById(record.creditId());
-        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.creditId())));
+        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.creditId())));
         creditTransfer.getUser().setWallet(user.getWallet());
         Wallet wallet = user.getWallet();
         user.getWallet().setBalance(user.getWallet().getBalance().add(creditTransfer.getAmount()));
@@ -110,7 +111,7 @@ public class CreditTransferService {
     @Transactional
     public WalletResponseDTO acceptCreditTransfer(AcceptCreditRecord record) {
         Optional<CreditTransfer> creditTransferOpt = creditTransferRepo.findById(record.creditId());
-        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.creditId())));
+        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.creditId())));
         creditTransfer.setCreditTransferType(CreditTransferType.CONFIRMED);
         creditTransferRepo.save(creditTransfer);
 
@@ -129,7 +130,7 @@ public class CreditTransferService {
 
     public void rejectCreditTransfer(AcceptCreditRecord record) {
         Optional<CreditTransfer> creditTransferOpt = creditTransferRepo.findById(record.creditId());
-        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.creditId())));
+        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.creditId())));
         creditTransfer.setCreditTransferType(CreditTransferType.REJECT);
         creditTransferRepo.save(creditTransfer);
     }

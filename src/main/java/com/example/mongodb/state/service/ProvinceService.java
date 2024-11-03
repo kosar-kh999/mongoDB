@@ -1,5 +1,6 @@
 package com.example.mongodb.state.service;
 
+import com.example.mongodb.core.exception.CustomException;
 import com.example.mongodb.state.dto.ProvinceRequestDTO;
 import com.example.mongodb.state.dto.ProvinceResponseDTO;
 import com.example.mongodb.state.mapper.ProvinceMapper;
@@ -29,14 +30,14 @@ public class ProvinceService {
 
     public void update(String id, ProvinceRequestDTO requestDTO) {
         Optional<Province> provinceOpt = provinceRepo.findById(id);
-        Province province = provinceOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Province province = provinceOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         provinceMapper.toEntity(requestDTO, province);
         provinceRepo.save(province);
     }
 
     public ProvinceResponseDTO findById(String id) {
         Optional<Province> provinceOpt = provinceRepo.findById(id);
-        Province province = provinceOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Province province = provinceOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         return provinceMapper.toDTO(province);
     }
 
@@ -47,7 +48,7 @@ public class ProvinceService {
 
     public void delete(String id) {
         Optional<Province> provinceOpt = provinceRepo.findById(id);
-        Province province = provinceOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Province province = provinceOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         provinceRepo.delete(province);
     }
 }

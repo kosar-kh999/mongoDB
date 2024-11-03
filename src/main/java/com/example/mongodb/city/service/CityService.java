@@ -5,6 +5,7 @@ import com.example.mongodb.city.dto.CityResponseDTO;
 import com.example.mongodb.city.mapper.CityMapper;
 import com.example.mongodb.city.model.City;
 import com.example.mongodb.city.repository.CityRepo;
+import com.example.mongodb.core.exception.CustomException;
 import com.example.mongodb.state.model.Province;
 import com.example.mongodb.state.repository.ProvinceRepo;
 import org.springframework.data.domain.Page;
@@ -30,21 +31,21 @@ public class CityService {
     public String save(CityRequestDTO requestDTO) {
         City city = cityMapper.toEntity(requestDTO);
         Optional<Province> provinceOpt = provinceRepo.findById(requestDTO.getProvince().getId());
-        Province province = provinceOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", requestDTO.getProvince().getId())));
+        Province province = provinceOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", requestDTO.getProvince().getId())));
         city.setProvince(province);
         return cityRepo.save(city).getId();
     }
 
     public void update(String id, CityRequestDTO requestDTO) {
         Optional<City> cityOpt = cityRepo.findById(id);
-        City city = cityOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        City city = cityOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         cityMapper.toEntity(requestDTO, city);
         cityRepo.save(city);
     }
 
     public CityResponseDTO findById(String id) {
         Optional<City> cityOpt = cityRepo.findById(id);
-        City city = cityOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        City city = cityOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         return cityMapper.toDTO(city);
     }
 
@@ -55,7 +56,7 @@ public class CityService {
 
     public void delete(String id) {
         Optional<City> cityOpt = cityRepo.findById(id);
-        City city = cityOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        City city = cityOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         cityRepo.delete(city);
     }
 }

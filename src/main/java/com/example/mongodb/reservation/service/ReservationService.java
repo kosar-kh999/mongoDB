@@ -1,5 +1,6 @@
 package com.example.mongodb.reservation.service;
 
+import com.example.mongodb.core.exception.CustomException;
 import com.example.mongodb.core.util.DateUtil;
 import com.example.mongodb.reservation.dto.ReservationDTO;
 import com.example.mongodb.reservation.dto.ReservationRequestDTO;
@@ -44,21 +45,21 @@ public class ReservationService {
     public String save(ReservationRequestDTO requestDTO) {
         Reservation reservation = reservationMapper.toEntity(requestDTO);
         Optional<Room> roomOpt = roomRepo.findById(requestDTO.getRoom().getId());
-        Room room = roomOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", requestDTO.getRoom().getId())));
+        Room room = roomOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", requestDTO.getRoom().getId())));
         reservation.setRoom(room);
         return reservationRepo.save(reservation).getId();
     }
 
     public void update(String id, ReservationRequestDTO requestDTO) {
         Optional<Reservation> reservationOpt = reservationRepo.findById(id);
-        Reservation reservation = reservationOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Reservation reservation = reservationOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         reservationMapper.toEntity(requestDTO, reservation);
         reservationRepo.save(reservation);
     }
 
     public ReservationResponseDTO findById(String id) {
         Optional<Reservation> reservationOpt = reservationRepo.findById(id);
-        Reservation reservation = reservationOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Reservation reservation = reservationOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         return reservationMapper.toDTO(reservation);
     }
 
@@ -69,26 +70,26 @@ public class ReservationService {
 
     public void delete(String id) {
         Optional<Reservation> reservationOpt = reservationRepo.findById(id);
-        Reservation reservation = reservationOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Reservation reservation = reservationOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         reservationRepo.delete(reservation);
     }
 
     @Transactional
     public ReservationDTO reserveRoom(ReservationRecord reservationRecord) {
         Room room = roomRepo.findById(reservationRecord.roomId())
-                .orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", reservationRecord.roomId())));
+                .orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", reservationRecord.roomId())));
 
         if (!room.getAvailable())
-            throw new RuntimeException("اتاق برای رزواریسیون در دسترس نیست.");
+            throw new CustomException("اتاق برای رزواریسیون در دسترس نیست.");
 
         if (!isRoomAvailableForDates(reservationRecord))
-            throw new RuntimeException("برای این بازه نمیتوان رزور کرد.");
+            throw new CustomException("برای این بازه نمیتوان رزور کرد.");
 
         room.setAvailable(false);
         roomRepo.save(room);
 
         User user = userRepo.findById(reservationRecord.userId())
-                .orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", reservationRecord.roomId())));
+                .orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", reservationRecord.roomId())));
 
         LocalDate checkInDate = DateUtil.convertPersianDateStringToLocalDate(reservationRecord.persianCheckInDate());
         LocalDate checkOutDate = DateUtil.convertPersianDateStringToLocalDate(reservationRecord.persianCheckOutDate());

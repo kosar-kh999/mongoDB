@@ -1,5 +1,6 @@
 package com.example.mongodb.wallet.service;
 
+import com.example.mongodb.core.exception.CustomException;
 import com.example.mongodb.wallet.dto.WalletRequestDTO;
 import com.example.mongodb.wallet.dto.WalletResponseDTO;
 import com.example.mongodb.wallet.mapper.WalletMapper;
@@ -29,14 +30,14 @@ public class WalletService {
 
     public void update(String id, WalletRequestDTO requestDTO) {
         Optional<Wallet> walletOpt = walletRepo.findById(id);
-        Wallet wallet = walletOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Wallet wallet = walletOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         walletMapper.toEntity(requestDTO, wallet);
         walletRepo.save(wallet);
     }
 
     public WalletResponseDTO findById(String id) {
         Optional<Wallet> walletOpt = walletRepo.findById(id);
-        Wallet wallet = walletOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Wallet wallet = walletOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         return walletMapper.toDTO(wallet);
     }
 
@@ -47,7 +48,7 @@ public class WalletService {
 
     public void delete(String id) {
         Optional<Wallet> walletOpt = walletRepo.findById(id);
-        Wallet wallet = walletOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Wallet wallet = walletOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         walletRepo.delete(wallet);
     }
 }

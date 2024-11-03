@@ -1,5 +1,6 @@
 package com.example.mongodb.walletHistory.service;
 
+import com.example.mongodb.core.exception.CustomException;
 import com.example.mongodb.walletHistory.dto.WalletHistoryRequestDTO;
 import com.example.mongodb.walletHistory.dto.WalletHistoryResponseDTO;
 import com.example.mongodb.walletHistory.mapper.WalletHistoryMapper;
@@ -29,14 +30,14 @@ public class WalletHistoryService {
 
     public void update(String id, WalletHistoryRequestDTO requestDTO) {
         Optional<WalletHistory> walletHistoryOpt = walletHistoryRepo.findById(id);
-        WalletHistory walletHistory = walletHistoryOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        WalletHistory walletHistory = walletHistoryOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         walletHistoryMapper.toEntity(requestDTO, walletHistory);
         walletHistoryRepo.save(walletHistory);
     }
 
     public WalletHistoryResponseDTO findById(String id) {
         Optional<WalletHistory> walletHistoryOpt = walletHistoryRepo.findById(id);
-        WalletHistory walletHistory = walletHistoryOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        WalletHistory walletHistory = walletHistoryOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         return walletHistoryMapper.toDTO(walletHistory);
     }
 
@@ -47,7 +48,7 @@ public class WalletHistoryService {
 
     public void delete(String id) {
         Optional<WalletHistory> walletHistoryOpt = walletHistoryRepo.findById(id);
-        WalletHistory walletHistory = walletHistoryOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        WalletHistory walletHistory = walletHistoryOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         walletHistoryRepo.delete(walletHistory);
     }
 }

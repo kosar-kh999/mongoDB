@@ -4,8 +4,6 @@ import com.example.mongodb.core.base.BaseEntity;
 import com.example.mongodb.creditTransfer.model.CreditTransfer;
 import com.example.mongodb.role.model.Role;
 import com.example.mongodb.wallet.model.Wallet;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +17,6 @@ import java.util.Set;
 @Setter
 @Getter
 @Document(collection = "USER")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User extends BaseEntity {
 
     private String firstName;

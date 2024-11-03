@@ -2,6 +2,7 @@ package com.example.mongodb.hotel.service;
 
 import com.example.mongodb.city.model.City;
 import com.example.mongodb.city.repository.CityRepo;
+import com.example.mongodb.core.exception.CustomException;
 import com.example.mongodb.hotel.dto.HotelRequestDTO;
 import com.example.mongodb.hotel.dto.HotelResponseDTO;
 import com.example.mongodb.hotel.mapper.HotelMapper;
@@ -40,7 +41,7 @@ public class HotelService {
 
     public String save(HotelRecord requestDTO) {
         Optional<City> cityOpt = cityRepo.findById(requestDTO.cityId());
-        City city = cityOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", requestDTO.cityId())));
+        City city = cityOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", requestDTO.cityId())));
         Hotel hotel = hotelMapper.toEntity(requestDTO);
         hotel.setCity(city);
         return hotelRepo.save(hotel).getId();
@@ -48,14 +49,14 @@ public class HotelService {
 
     public void update(String id, HotelRequestDTO requestDTO) {
         Optional<Hotel> hotelOpt = hotelRepo.findById(id);
-        Hotel hotel = hotelOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Hotel hotel = hotelOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         hotelMapper.toEntity(requestDTO, hotel);
         hotelRepo.save(hotel);
     }
 
     public HotelResponseDTO findById(String id) {
         Optional<Hotel> hotelOpt = hotelRepo.findById(id);
-        Hotel hotel = hotelOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Hotel hotel = hotelOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         return hotelMapper.toDTO(hotel);
     }
 
@@ -66,7 +67,7 @@ public class HotelService {
 
     public void delete(String id) {
         Optional<Hotel> hotelOpt = hotelRepo.findById(id);
-        Hotel hotel = hotelOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Hotel hotel = hotelOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         hotelRepo.delete(hotel);
     }
 

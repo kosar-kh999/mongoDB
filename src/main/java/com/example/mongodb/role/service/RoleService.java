@@ -1,5 +1,6 @@
 package com.example.mongodb.role.service;
 
+import com.example.mongodb.core.exception.CustomException;
 import com.example.mongodb.role.dto.RoleRequestDTO;
 import com.example.mongodb.role.dto.RoleResponseDTO;
 import com.example.mongodb.role.mapper.RoleMapper;
@@ -29,14 +30,14 @@ public class RoleService {
 
     public void update(String id, RoleRequestDTO requestDTO) {
         Optional<Role> roleOpt = roleRepo.findById(id);
-        Role role = roleOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Role role = roleOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         roleMapper.toEntity(requestDTO, role);
         roleRepo.save(role);
     }
 
     public RoleResponseDTO findById(String id) {
         Optional<Role> roleOpt = roleRepo.findById(id);
-        Role role = roleOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Role role = roleOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         return roleMapper.toDTO(role);
     }
 
@@ -47,7 +48,7 @@ public class RoleService {
 
     public void delete(String id) {
         Optional<Role> roleOpt = roleRepo.findById(id);
-        Role role = roleOpt.orElseThrow(() -> new RuntimeException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
+        Role role = roleOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", id)));
         roleRepo.delete(role);
     }
 }

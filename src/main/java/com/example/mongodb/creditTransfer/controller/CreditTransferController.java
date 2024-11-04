@@ -3,6 +3,7 @@ package com.example.mongodb.creditTransfer.controller;
 import com.example.mongodb.creditTransfer.dto.CreditTransferRequestDTO;
 import com.example.mongodb.creditTransfer.dto.CreditTransferResponseDTO;
 import com.example.mongodb.creditTransfer.record.AcceptCreditRecord;
+import com.example.mongodb.creditTransfer.record.CreditFilterRecord;
 import com.example.mongodb.creditTransfer.record.CreditTransferRecord;
 import com.example.mongodb.creditTransfer.service.CreditTransferService;
 import com.example.mongodb.wallet.dto.WalletResponseDTO;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class CreditTransferController {
@@ -66,5 +69,11 @@ public class CreditTransferController {
     public ResponseEntity<Void> rejectCreditTransfer(@RequestBody AcceptCreditRecord requestDTO) {
         creditTransferService.rejectCreditTransfer(requestDTO);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/credit-transfer/filter")
+    public ResponseEntity<List<CreditTransferResponseDTO>> filter(@RequestBody CreditFilterRecord requestDTO) {
+        List<CreditTransferResponseDTO> responseDTOS = creditTransferService.filter(requestDTO);
+        return ResponseEntity.ok(responseDTOS);
     }
 }

@@ -7,6 +7,7 @@ import com.example.mongodb.creditTransfer.enumuration.CreditTransferType;
 import com.example.mongodb.creditTransfer.mapper.CreditTransferMapper;
 import com.example.mongodb.creditTransfer.model.CreditTransfer;
 import com.example.mongodb.creditTransfer.record.AcceptCreditRecord;
+import com.example.mongodb.creditTransfer.record.CreditFilterRecord;
 import com.example.mongodb.creditTransfer.record.CreditTransferRecord;
 import com.example.mongodb.creditTransfer.repository.CreditTransferRepo;
 import com.example.mongodb.user.model.User;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CreditTransferService {
@@ -133,5 +135,9 @@ public class CreditTransferService {
         CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.creditId())));
         creditTransfer.setCreditTransferType(CreditTransferType.REJECT);
         creditTransferRepo.save(creditTransfer);
+    }
+
+    public List<CreditTransferResponseDTO> filter(CreditFilterRecord creditFilterRecord) {
+        return creditTransferRepo.findByUserIdAndType(creditFilterRecord.userId(), creditFilterRecord.creditTransferType()).stream().map(creditTransferMapper::toDTO).collect(Collectors.toList());
     }
 }

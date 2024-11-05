@@ -71,9 +71,9 @@ public class CreditTransferController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "/credit-transfer/filter")
-    public ResponseEntity<List<CreditTransferResponseDTO>> filter(@RequestBody CreditFilterRecord requestDTO) {
-        List<CreditTransferResponseDTO> responseDTOS = creditTransferService.filter(requestDTO);
+    @PostMapping(value = "/credit-transfer/confirmed")
+    public ResponseEntity<List<CreditTransferResponseDTO>> findConfirmedTransfersForUser(@RequestBody CreditFilterRecord requestDTO) {
+        List<CreditTransferResponseDTO> responseDTOS = creditTransferService.findConfirmedTransfersForUser(requestDTO);
         return ResponseEntity.ok(responseDTOS);
     }
 }

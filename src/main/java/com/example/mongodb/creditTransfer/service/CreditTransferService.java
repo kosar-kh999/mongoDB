@@ -19,6 +19,7 @@ import com.example.mongodb.wallet.repository.WalletRepo;
 import com.example.mongodb.walletHistory.enumuration.TransactionType;
 import com.example.mongodb.walletHistory.model.WalletHistory;
 import com.example.mongodb.walletHistory.repository.WalletHistoryRepo;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -137,7 +138,8 @@ public class CreditTransferService {
         creditTransferRepo.save(creditTransfer);
     }
 
-    public List<CreditTransferResponseDTO> filter(CreditFilterRecord creditFilterRecord) {
-        return creditTransferRepo.findByUserIdAndType(creditFilterRecord.userId(), creditFilterRecord.creditTransferType()).stream().map(creditTransferMapper::toDTO).collect(Collectors.toList());
+    public List<CreditTransferResponseDTO> findConfirmedTransfersForUser(CreditFilterRecord record) {
+        ObjectId userId = new ObjectId(record.userId());
+        return creditTransferRepo.findConfirmedTransfersForUser(userId).stream().map(creditTransferMapper::toDTO).collect(Collectors.toList());
     }
 }

@@ -12,8 +12,7 @@ public interface CreditTransferRepo extends MongoRepository<CreditTransfer, Stri
 
     @Aggregation(pipeline = {
             "{ '$match': { 'creditTransferType': ?1, 'user._id': { '$eq': ?0 } } }",
-            "{ '$lookup': { 'from': 'USER', 'localField': 'user._id', 'foreignField': '_id', 'as': 'userDetails' } }",
-            "{ '$unwind': '$userDetails' }"
+            "{ '$lookup': { 'from': 'USER', 'localField': 'user._id', 'foreignField': '_id', 'as': 'userDetails' } }"
     })
     List<CreditTransfer> findTransfersForUser(@Param("userId") String userId,
                                               @Param("creditType") CreditTransferType creditType);

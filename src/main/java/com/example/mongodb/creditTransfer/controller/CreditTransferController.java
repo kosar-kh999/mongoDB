@@ -60,8 +60,8 @@ public class CreditTransferController {
     }
 
     @PostMapping(value = "/credit-transfer/accepted")
-    public ResponseEntity<WalletResponseDTO> acceptCreditTransfer(@RequestBody AcceptCreditRecord requestDTO) {
-        WalletResponseDTO walletResponseDTO = creditTransferService.acceptCreditTransfer(requestDTO);
+    public ResponseEntity<WalletResponseDTO> increaseCredit(@RequestBody AcceptCreditRecord requestDTO) {
+        WalletResponseDTO walletResponseDTO = creditTransferService.increaseCredit(requestDTO);
         return ResponseEntity.ok(walletResponseDTO);
     }
 
@@ -71,7 +71,7 @@ public class CreditTransferController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "/credit-transfer/filter/user")
+    @PostMapping(value = "/credit-transfer/filter")
     public ResponseEntity<List<CreditTransferResponseDTO>> findTransfersForUser(@RequestBody CreditFilterRecord requestDTO) {
         List<CreditTransferResponseDTO> responseDTOS = creditTransferService.findTransfersForUser(requestDTO);
         return ResponseEntity.ok(responseDTOS);

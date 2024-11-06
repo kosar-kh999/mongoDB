@@ -101,24 +101,13 @@ public class CreditTransferService {
         User user = userOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.userId())));
         Optional<CreditTransfer> creditTransferOpt = creditTransferRepo.findById(record.creditId());
         CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.creditId())));
+        creditTransfer.setCreditTransferType(CreditTransferType.CONFIRMED);
+        creditTransferRepo.save(creditTransfer);
         creditTransfer.getUser().setWallet(user.getWallet());
         Wallet wallet = user.getWallet();
         user.getWallet().setBalance(user.getWallet().getBalance().add(creditTransfer.getAmount()));
         userRepo.save(user);
         wallet.setBalance(user.getWallet().getBalance());
-        walletRepo.save(wallet);
-        return walletMapper.toDTO(creditTransfer.getUser().getWallet());
-    }
-
-    @Transactional
-    public WalletResponseDTO acceptCreditTransfer(AcceptCreditRecord record) {
-        Optional<CreditTransfer> creditTransferOpt = creditTransferRepo.findById(record.creditId());
-        CreditTransfer creditTransfer = creditTransferOpt.orElseThrow(() -> new CustomException(String.format("اطلاعاتی با شناسه %s یافت نشد.", record.creditId())));
-        creditTransfer.setCreditTransferType(CreditTransferType.CONFIRMED);
-        creditTransferRepo.save(creditTransfer);
-
-        WalletResponseDTO walletResponseDTO = increaseCredit(record);
-
         WalletHistory walletHistory = new WalletHistory();
         walletHistory.setCredit(creditTransfer.getAmount());
         walletHistory.setDescription(creditTransfer.getDescription());
@@ -126,8 +115,10 @@ public class CreditTransferService {
         List<WalletHistory> walletHistories = creditTransfer.getUser().getWallet().getWalletHistories();
         walletHistories.add(walletHistory);
         walletHistory.setTransactionType(TransactionType.DEPOSIT);
+        wallet.setWalletHistories(walletHistories);
         walletHistoryRepo.save(walletHistory);
-        return walletResponseDTO;
+        walletRepo.save(wallet);
+        return walletMapper.toDTO(creditTransfer.getUser().getWallet());
     }
 
     public void rejectCreditTransfer(AcceptCreditRecord record) {

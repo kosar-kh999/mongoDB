@@ -10,6 +10,8 @@ import com.example.mongodb.user.model.User;
 import com.example.mongodb.user.record.ResetPasswordRecord;
 import com.example.mongodb.user.record.UserRecord;
 import com.example.mongodb.user.repository.UserRepo;
+import com.example.mongodb.wallet.dto.WalletResponseDTO;
+import com.example.mongodb.wallet.mapper.WalletMapper;
 import com.example.mongodb.wallet.model.Wallet;
 import com.example.mongodb.wallet.repository.WalletRepo;
 import org.springframework.data.domain.Page;
@@ -20,21 +22,25 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final UserRepo userRepo;
     private final UserMapper userMapper;
     private final RoleRepo roleRepo;
+    private final WalletMapper walletMapper;
     private final WalletRepo walletRepo;
 
     public UserService(UserRepo userRepo,
                        UserMapper userMapper,
                        RoleRepo roleRepo,
+                       WalletMapper walletMapper,
                        WalletRepo walletRepo) {
         this.userRepo = userRepo;
         this.userMapper = userMapper;
         this.roleRepo = roleRepo;
+        this.walletMapper = walletMapper;
         this.walletRepo = walletRepo;
     }
 
@@ -103,5 +109,9 @@ public class UserService {
             }
         }
         userRepo.saveAll(users);
+    }
+
+    public List<WalletResponseDTO> getUserWalletHistory(String userId) {
+        return userRepo.getUserWalletHistory(userId).stream().map(User::getWallet).map(walletMapper::toDTO).collect(Collectors.toList());
     }
 }

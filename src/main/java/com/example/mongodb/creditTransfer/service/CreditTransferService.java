@@ -106,7 +106,6 @@ public class CreditTransferService {
         creditTransfer.getUser().setWallet(user.getWallet());
         Wallet wallet = user.getWallet();
         user.getWallet().setBalance(user.getWallet().getBalance().add(creditTransfer.getAmount()));
-        userRepo.save(user);
         wallet.setBalance(user.getWallet().getBalance());
         WalletHistory walletHistory = new WalletHistory();
         walletHistory.setCredit(creditTransfer.getAmount());
@@ -116,6 +115,8 @@ public class CreditTransferService {
         walletHistories.add(walletHistory);
         walletHistory.setTransactionType(TransactionType.DEPOSIT);
         wallet.setWalletHistories(walletHistories);
+        user.getWallet().setWalletHistories(walletHistories);
+        userRepo.save(user);
         walletHistoryRepo.save(walletHistory);
         walletRepo.save(wallet);
         return walletMapper.toDTO(creditTransfer.getUser().getWallet());

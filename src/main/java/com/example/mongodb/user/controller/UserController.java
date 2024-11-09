@@ -2,15 +2,20 @@ package com.example.mongodb.user.controller;
 
 import com.example.mongodb.user.dto.UserRequestDTO;
 import com.example.mongodb.user.dto.UserResponseDTO;
+import com.example.mongodb.user.model.User;
 import com.example.mongodb.user.record.ResetPasswordRecord;
 import com.example.mongodb.user.record.UserRecord;
 import com.example.mongodb.user.service.UserService;
+import com.example.mongodb.wallet.dto.WalletResponseDTO;
+import com.example.mongodb.wallet.model.Wallet;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -66,5 +71,11 @@ public class UserController {
     public ResponseEntity<Void> updateUser() {
         userService.updateWalletOfUser();
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/user/wallet-history/{id}")
+    public ResponseEntity<List<WalletResponseDTO>> getUserWalletHistory(@PathVariable String id) {
+        List<WalletResponseDTO> responseDTOS = userService.getUserWalletHistory(id);
+        return ResponseEntity.ok(responseDTOS);
     }
 }

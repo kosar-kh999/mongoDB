@@ -2,7 +2,6 @@ package com.example.mongodb.wallet.dto;
 
 import com.example.mongodb.core.base.RequestDTO;
 import com.example.mongodb.walletHistory.dto.WalletHistoryRequestDTO;
-import com.example.mongodb.walletHistory.model.WalletHistory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

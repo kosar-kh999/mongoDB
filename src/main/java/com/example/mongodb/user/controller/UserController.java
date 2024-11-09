@@ -2,12 +2,10 @@ package com.example.mongodb.user.controller;
 
 import com.example.mongodb.user.dto.UserRequestDTO;
 import com.example.mongodb.user.dto.UserResponseDTO;
-import com.example.mongodb.user.model.User;
 import com.example.mongodb.user.record.ResetPasswordRecord;
 import com.example.mongodb.user.record.UserRecord;
 import com.example.mongodb.user.service.UserService;
 import com.example.mongodb.wallet.dto.WalletResponseDTO;
-import com.example.mongodb.wallet.model.Wallet;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

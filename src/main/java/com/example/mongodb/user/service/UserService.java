@@ -20,8 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,8 +47,8 @@ public class UserService {
     }
 
     public String save(UserRequestDTO requestDTO) {
-        User user = userRepo.findByUsername(requestDTO.getUsername());
-        if (user != null)
+        Optional<User> user = userRepo.findByUsername(requestDTO.getUsername());
+        if (user.isPresent())
             throw new CustomException(String.format("کاربر  %s قبلا ثبت نام کرده است.", requestDTO.getUsername()));
         User newUser = userMapper.toEntity(requestDTO);
         return userRepo.save(newUser).getId();
@@ -113,5 +115,25 @@ public class UserService {
 
     public List<WalletResponseDTO> getUserWalletHistory(String userId) {
         return userRepo.getUserWalletHistory(userId).stream().map(User::getWallet).map(walletMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepo.existsByUsername(username);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepo.existsByEmail(email);
+    }
+
+    public void save(String username, String email, String encodedPassword, String role) {
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepo.findByName(role));
+
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(encodedPassword);
+        user.setRoles(roles);
+        userRepo.save(user);
     }
 }

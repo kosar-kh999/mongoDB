@@ -1,8 +1,16 @@
 package com.example.mongodb.core.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+@Builder
 public class CustomException extends RuntimeException {
     private Integer errorCode;
     private Integer httpStatusCode;
+    private String message;
 
     public CustomException(String message, Throwable cause) {
         super(message, cause);

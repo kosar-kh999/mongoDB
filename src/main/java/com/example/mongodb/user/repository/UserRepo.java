@@ -5,9 +5,10 @@ import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepo extends MongoRepository<User, String> {
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
     @Aggregation(pipeline = {
             "{ '$match': { '_id': ?0 } }",
@@ -15,4 +16,8 @@ public interface UserRepo extends MongoRepository<User, String> {
             "{ '$unwind': { 'path': '$wallet'} }"
     })
     List<User> getUserWalletHistory(String userId);
+
+    Boolean existsByUsername(String username);
+
+    Boolean existsByEmail(String email);
 }
